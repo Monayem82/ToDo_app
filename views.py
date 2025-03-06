@@ -12,7 +12,7 @@ def Todo_views(request):
         new_task=Task_model(task=request.POST.get('addfontendTask'))
         new_task.save()
 
-        return redirect('todo')
+        return redirect('todo') 
 
 
     contax={
