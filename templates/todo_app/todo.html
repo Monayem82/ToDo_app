@@ -26,6 +26,7 @@
             <p class="text-muted">{% now "jS F Y" %}</p>
             <div class="col-md-7 col-lg-7" style="height: 450px; overflow: scroll;">
                 <!-- List of all the tasks for the day -->
+
                 <div class="card m-1">
                     {% for task in tasks %}
                     <div class="card-body">
@@ -33,9 +34,9 @@
                             {{task}}
                         
                         <span style="position: relative; float: right;">
-                            <a class="btn btn-success"><i class="fa fa-check"></i> Mark as Done</a>
-                            <a class="btn btn-danger"><i class="fa fa-trash"></i></a>
-                            <a class="btn btn-primary"><i class="fa fa-pencil"></i></a>
+                            <a class="btn btn-success" href="{% url 'complited_task' task.id %}" ><i class="fa fa-check"></i> Mark as Done</a>
+                            <a class="btn btn-danger" href="{% url 'delete_task' task.id %}"><i class="fa fa-trash"></i></a>
+                            <a class="btn btn-primary" href="{% url 'edit_task' task.id %}"><i class="fa fa-pencil"></i></a>
                         </span>
                     </div> <hr>
                     {% endfor %}
@@ -45,24 +46,44 @@
             <div class="col-md-5 col-lg-5">
                 <h5>Completed Tasks</h5>
                 <!-- List of all the tasks that have completed -->
+                {% for complite in complited_tasks %}
                 <div class="card m-1">
                     <div class="card-body">
-                        This is the completed task.
+                        {{complite}}
+                        <span style="position: relative; float: right;">
+                            <a class="btn btn-success" href="{% url 'uncomplited_task' complite.id %}" ><i class="fa fa-check"></i> Mark as Undone</a>
+                            <a class="btn btn-danger" href="{% url 'delete_task' complite.id %}"><i class="fa fa-trash"></i></a>
+                        </span>
                     </div>
                 </div>
+                {% endfor %}
+
             </div>
         </div>
         <div class="row">
             <div class="col-md-6 col-lg-6 p-0" style="position: absolute; bottom: 50px;">
                 <!-- To Do Form -->
-                <form action="" >
+                 <!-- Editing view also -->
+                 {% if task.id %}
+                <form action="" method="post">{% csrf_token %}
                     <div class="form-group">
                         <span style="display: flex;">
-                            <input type="text" class="form-control" placeholder="Add a task">
+                            <input type="text" name="addfontendTask" value="{{task.task}}" class="form-control" placeholder="Add a task">
+                            <button class="btn btn-primary" style="width: 200px;"><i class="fa fa-plus"></i> Update</button>
+                        </span>
+                    </div>
+                </form>
+                {% else %}
+                <form action="" method="post">{% csrf_token %}
+                    <div class="form-group">
+                        <span style="display: flex;">
+                            <input type="text" name="addfontendTask" class="form-control" placeholder="Add a task">
                             <button class="btn btn-primary" style="width: 200px;"><i class="fa fa-plus"></i> Add</button>
                         </span>
                     </div>
                 </form>
+
+                {% endif %}
             </div>
         </div>
     </div>
